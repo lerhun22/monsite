@@ -16,14 +16,14 @@ Route::get('/', function () {
 
 });
 
+Auth::routes();
+Route::get('/home', 'HomeController@index')->name('home');
+
 
 Route::get('/about', function () {
     return ('<h1>Mon Site</h1>');
 });
 
-Route::get('/contact', 'ContactController@index');
-Route::post('/contact', 'ContactController@index');
+Route::get('/contact', 'ContactController@index')->name('contact');
+Route::post('/contact', 'ContactController@sendcontact')->name('sendcontact');
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
