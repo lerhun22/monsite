@@ -1,69 +1,48 @@
-@extends('layouts.app')
+@extends('layouts.form')
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
+@section('card')
 
-                <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('login') }}">
-                        {{ csrf_field() }}
+    @component('components.card')
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+        @slot('title')
+            @lang('Connexion')
+        @endslot
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
+        <form method="POST" action="{{ route('login') }}">
+            {{ csrf_field() }}
 
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+            @include('partials.form-group', [
+                'title' => __('Adresse email'),
+                'type' => 'email',
+                'name' => 'email',
+                'required' => true,
+                ])
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
+            @include('partials.form-group', [
+                'title' => __('Mot de passe'),
+                'type' => 'password',
+                'name' => 'password',
+                'required' => true,
+                ])    
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Login
-                                </button>
-
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    Forgot Your Password?
-                                </a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+            <div class="form-check">
+                <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" name="remember" {{ old('remember') ? 'checked' : '' }}> 
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description"> @lang('Se rappeler de moi')</span>
+                </label>
             </div>
-        </div>
-    </div>
-</div>
+
+            @component('components.button')
+                @lang('Connexion')
+            @endcomponent
+
+            <a class="btn btn-link" href="{{ route('password.request') }}">
+                @lang('Mot de passe oublié ?')
+            </a>
+
+        </form>
+
+    @endcomponent
+
 @endsection
