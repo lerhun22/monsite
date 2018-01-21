@@ -10,15 +10,22 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/', 'HomeController@index')->name('home');
 
-Route::get('/about', function () {
-    return ('<h1>Mon Site</h1>');
+Route::middleware('admin')->group(function () {
+    Route::resource ('category', 'CategoryController', [
+        'except' => 'show'
+    ]);
+
 });
 
-Route::get('/contact', 'ContactController@index')->name('contact');
-Route::post('/contact', 'ContactController@sendcontact')->name('sendcontact');
+Route::middleware('auth')->group(function () {
+    Route::resource('image', 'ImageController', [
+        'only' => ['create', 'store', 'destroy']
+    ]);
 
+});
+
+Route::name('category')->get('category/{slug}', 'ImageController@category');
